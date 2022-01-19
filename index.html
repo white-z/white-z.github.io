@@ -4,9 +4,67 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <title></title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="./index.js"></script>
+    <style>
+      #result {
+        position: relative;
+        margin-top: 20px;
+        height: 20px;
+        width: 300px;
+        border: 1px solid #ccc;
+        color: #fff;
+      }
+      .result-item {
+        position: absolute;
+        height: 20px;
+        width: 0%;
+        max-width: 100%;
+        color: #fff;
+        background-color: sandybrown;
+        transition: width .15s;
+      }
+      .data {
+        position: absolute;
+        left: -1px;
+        top: -20px;
+        color: grey;
+      }
+    </style>
   </head>
   <body>
-    <p>直接打开相机拍照：<input type="file" accept="image/*" capture="camera" multiple></p>
-    <p>打开相机或打开相册：<input type="file" accept="image/*"></p>
+      <input type="file" name="file" id="file">
+      <button id="submit">SUBMIT</button>
+      <div id="result">
+        <div class="result-item"><span class="data">0%</span></div>
+      </div>
+    <script>
+      $(document).on('change', '#file', function() {
+        $('.result-item').css({width: '0%'}).children().text('0%');
+      })
+      $(document).on('click', '#submit', function() {
+        const file = $('#file')[0].files[0];
+        const data = new FormData();
+        data.append('file', file);
+        $.ajax({
+          method: 'post',
+          url: 'http://192.168.1.129:3031/api/test/test',
+          processData: false,
+          contentType: false,
+          mimeType: 'multipart/form-data',
+          data,
+          xhr() {
+            var xhr = new XMLHttpRequest();
+            //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
+            xhr.upload.addEventListener('progress', function (e) {
+                const progressRate = ((e.loaded / e.total) * 100).toFixed(2) + '%';
+                $('.result-item').css({width: progressRate}).children().text(progressRate);
+            })
+            return xhr;
+          }
+        })
+      })
+      
+    </script>
   </body>
 </html>
