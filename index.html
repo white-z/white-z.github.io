@@ -1,70 +1,37 @@
-<!DOCTYPE html>
-<html lang="zh" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-    <title></title>
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="./index.js"></script>
-    <style>
-      #result {
-        position: relative;
-        margin-top: 20px;
-        height: 20px;
-        width: 300px;
-        border: 1px solid #ccc;
-        color: #fff;
-      }
-      .result-item {
-        position: absolute;
-        height: 20px;
-        width: 0%;
-        max-width: 100%;
-        color: #fff;
-        background-color: sandybrown;
-        transition: width .15s;
-      }
-      .data {
-        position: absolute;
-        left: -1px;
-        top: -20px;
-        color: grey;
-      }
-    </style>
-  </head>
-  <body>
-      <input type="file" name="file" id="file">
-      <button id="submit">SUBMIT</button>
-      <div id="result">
-        <div class="result-item"><span class="data">0%</span></div>
-      </div>
-    <script>
-      $(document).on('change', '#file', function() {
-        $('.result-item').css({width: '0%'}).children().text('0%');
-      })
-      $(document).on('click', '#submit', function() {
-        const file = $('#file')[0].files[0];
-        const data = new FormData();
-        data.append('file', file);
-        $.ajax({
-          method: 'post',
-          url: 'http://192.168.1.129:3031/api/test/test',
-          processData: false,
-          contentType: false,
-          mimeType: 'multipart/form-data',
-          data,
-          xhr() {
-            var xhr = new XMLHttpRequest();
-            //使用XMLHttpRequest.upload监听上传过程，注册progress事件，打印回调函数中的event事件
-            xhr.upload.addEventListener('progress', function (e) {
-                const progressRate = ((e.loaded / e.total) * 100).toFixed(2) + '%';
-                $('.result-item').css({width: progressRate}).children().text(progressRate);
-            })
-            return xhr;
-          }
-        })
-      })
+<html lang="cn">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <p>cooooooooooooooooopy</p>
+  <button>goto</button>
+  <script>
+    var url = 'http://192.168.1.130:8080/some.html'
+    $(document).on('copy', function () {
+      var link = document.createElement('a')
+      link.setAttribute('href', url)
+      link.setAttribute('target', '_blank')
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
       
-    </script>
-  </body>
+      var jumpError = setTimeout(function() {
+      window.location.href = url
+      }, 300)
+      document.addEventListener('visibilitychange', function () {
+          clearTimeout(jumpError);
+      });
+      window.addEventListener('pagehide', function() {
+          clearTimeout(jumpError);
+      });
+    })
+    $('button').click(function() {
+      window.open(url)
+    })
+  </script>
+</body>
 </html>
