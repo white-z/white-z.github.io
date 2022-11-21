@@ -26,7 +26,8 @@
 
 <body>
   <div id="app">
-    <div class="item"><label class="label">当前日期：</label><el-input type="date" v-model="nowDate" /> 距离{{lastDate}}还有{{days}}天</div> 
+    <div style="margin: 12px;"> 距离第九季结束日{{lastDate}}还有{{days}}天</div>
+    <div class="item"><label class="label">当前日期：</label><el-input type="date" v-model="nowDate" /></div> 
     <div class="item"><label class="label">当前等级：</label><el-input v-model.number="currentLevel" type="number" /></div>
     <div class="item"><label class="label">距离满级所需经验：</label><div v-text="stillNeed"></div></div>
     <div class="item"><label class="label">全勤可获取经验（仅包含每日/每周任务）：</label><div v-text="dailyEX" ></div></div>
